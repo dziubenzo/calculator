@@ -9,6 +9,7 @@ const digits = buttons.querySelectorAll('.digit');
 const digitsArray = Array.from(digits);
 const decimalPoint = document.querySelector('.decimal');
 let decimalAllowed = true;
+const zeroDigit = document.querySelector('.zero');
 const operators = buttons.querySelectorAll('.operator');
 const operatorsArray = Array.from(operators);
 
@@ -56,17 +57,18 @@ function getFirstNumber(event) {
   if (event.target === buttons) {
     return;
   }
-  // Make sure decimal point can only be used once
+  // Make sure decimal point can only be used once per number
   // Add it to the default zero if clicked first
   // Update display and variable
   if (decimalPoint === event.target && decimalAllowed === true) {
-    if (displayResult.textContent === '0') {
+    if (displayResult.textContent === '0' && firstNumber === '') {
       firstNumber += '0' + event.target.textContent;
       displayResult.textContent = firstNumber;
       decimalAllowed = false;
     } else {
       firstNumber += event.target.textContent;
       displayResult.textContent = firstNumber;
+      decimalAllowed = false;
     }
   }
   // Update display and variable
@@ -74,8 +76,21 @@ function getFirstNumber(event) {
     firstNumber += event.target.textContent;
     displayResult.textContent = firstNumber;
     console.log(firstNumber);
-    // Call another function if operator clicked
-  } else if (operatorsArray.includes(event.target)) {
-    console.log(event.target.getAttribute('value'));
+    // If operator clicked and number is not empty:
+    // Reset and update variables, update operation display and make it visible
+    // Call another function
+  } else if (operatorsArray.includes(event.target) && firstNumber != '') {
+    operator = event.target.getAttribute('value');
+    decimalAllowed = true;
+    displayOperation.classList.remove('hidden');
+    displayOperation.textContent = `${firstNumber} ${event.target.textContent}`;
+    buttons.removeEventListener('click', getFirstNumber);
+    buttons.addEventListener('click', getSecondNumber);
   }
+}
+
+// Get second number
+function getSecondNumber(event) {
+  console.log("I'm working, I guess?");
+  return;
 }

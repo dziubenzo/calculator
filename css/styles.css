@@ -37,7 +37,6 @@ body {
 .display .operation {
   font-size: 18px;
   margin: 12px 0;
-  visibility: hidden;
 }
 
 .display .result {
