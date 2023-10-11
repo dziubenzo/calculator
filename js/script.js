@@ -29,9 +29,9 @@ function operate(num1, operator, num2) {
       return add(num1, num2);
     case '-':
       return subtract(num1, num2);
-    case '/':
+    case '÷':
       return divide(num1, num2);
-    case '*':
+    case '×':
       return multiply(num1, num2);
     default:
       return 'Error: improper operator.';
