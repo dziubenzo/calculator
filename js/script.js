@@ -1,12 +1,14 @@
-let firstNumber;
-let secondNumber;
-let operator;
+let firstNumber = '';
+let secondNumber = '';
+let operator = '';
 
 let displayResult = document.querySelector('.display .result');
 let displayOperation = document.querySelector('.display .operation');
 const buttons = document.querySelector('.buttons');
+const digits = buttons.querySelectorAll('.digit');
+const digitsArray = Array.from(digits);
 
-buttons.addEventListener('click', getButton);
+buttons.addEventListener('click', getFirstNumber);
 
 // Add two numbers
 function add(num1, num2) {
@@ -44,11 +46,16 @@ function operate(num1, operator, num2) {
   }
 }
 
-// Get button clicked
-function getButton(event) {
+// Get first number
+function getFirstNumber(event) {
   // Skip buttons div itself
   if (event.target === buttons) {
     return;
   }
-  return console.log(`${event.target.getAttribute('value')}`)
+  // Update variable and display if digit clicked
+  if (digitsArray.includes(event.target)) {
+    firstNumber += event.target.textContent;
+    displayResult.textContent = firstNumber;
+    console.log(firstNumber);
+  }
 }

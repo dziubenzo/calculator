@@ -37,6 +37,7 @@ body {
 .display .operation {
   font-size: 18px;
   margin: 12px 0;
+  visibility: hidden;
 }
 
 .display .result {
@@ -72,4 +73,8 @@ body {
 
 .button.equals {
   flex: 1;
+}
+
+.hidden {
+  visibility: hidden;
 }
