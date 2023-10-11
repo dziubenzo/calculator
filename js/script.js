@@ -50,5 +50,5 @@ function getButton(event) {
   if (event.target === buttons) {
     return;
   }
-  return console.log(`${event.target.textContent}`)
+  return console.log(`${event.target.getAttribute('value')}`)
 }
