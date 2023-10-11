@@ -23,7 +23,7 @@ function multiply(num1, num2) {
 }
 
 // Perform specified operation
-function operate(operator, num1, num2) {
+function operate(num1, operator, num2) {
   switch (operator) {
     case '+':
       return add(num1, num2);
