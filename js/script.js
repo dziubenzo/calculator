@@ -7,6 +7,10 @@ let displayOperation = document.querySelector('.display .operation');
 const buttons = document.querySelector('.buttons');
 const digits = buttons.querySelectorAll('.digit');
 const digitsArray = Array.from(digits);
+const decimalPoint = document.querySelector('.decimal');
+let decimalAllowed = true;
+const operators = buttons.querySelectorAll('.operator');
+const operatorsArray = Array.from(operators);
 
 buttons.addEventListener('click', getFirstNumber);
 
@@ -52,10 +56,26 @@ function getFirstNumber(event) {
   if (event.target === buttons) {
     return;
   }
-  // Update variable and display if digit clicked
+  // Make sure decimal point can only be used once
+  // Add it to the default zero if clicked first
+  // Update display and variable
+  if (decimalPoint === event.target && decimalAllowed === true) {
+    if (displayResult.textContent === '0') {
+      firstNumber += '0' + event.target.textContent;
+      displayResult.textContent = firstNumber;
+      decimalAllowed = false;
+    } else {
+      firstNumber += event.target.textContent;
+      displayResult.textContent = firstNumber;
+    }
+  }
+  // Update display and variable
   if (digitsArray.includes(event.target)) {
     firstNumber += event.target.textContent;
     displayResult.textContent = firstNumber;
     console.log(firstNumber);
+    // Call another function if operator clicked
+  } else if (operatorsArray.includes(event.target)) {
+    console.log(event.target.getAttribute('value'));
   }
 }
