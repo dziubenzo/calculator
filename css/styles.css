@@ -20,12 +20,14 @@ body {
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
+  gap: 20px;
 }
 
 .display {
   height: 140px;
   border: 1px solid black;
   border-radius: 12px;
+  padding: 16px;
 }
 
 .buttons {
