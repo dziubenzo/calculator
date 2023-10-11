@@ -28,6 +28,20 @@ body {
   border: 1px solid black;
   border-radius: 12px;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.display .operation {
+  font-size: 18px;
+  margin: 12px 0;
+}
+
+.display .result {
+  font-size: 32px;
+  margin: 12px 0;
 }
 
 .buttons {
