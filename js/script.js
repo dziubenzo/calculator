@@ -56,20 +56,7 @@ function getFirstNumber(event) {
   if (event.target === buttons) {
     return;
   }
-  // Make sure decimal point can only be used once per number
-  // Add it to the default zero if clicked first
-  // Update display and variable
-  if (decimalPoint === event.target && decimalAllowed === true) {
-    if (displayResult.textContent === '0' && firstNumber === '') {
-      firstNumber += '0' + event.target.textContent;
-      displayResult.textContent = firstNumber;
-      decimalAllowed = false;
-    } else {
-      firstNumber += event.target.textContent;
-      displayResult.textContent = firstNumber;
-      decimalAllowed = false;
-    }
-  }
+  firstNumber = handleDecimalPoints(event, firstNumber);
   // Update display and variable
   if (digitsArray.includes(event.target)) {
     // Make sure only one zero can be at the front
@@ -96,4 +83,23 @@ function getFirstNumber(event) {
 function getSecondNumber(event) {
   console.log("I'm working, I guess?");
   return;
+}
+
+// Handle decimal points (helper function):
+// Make sure decimal point can only be used once per number
+// Add it to the default zero if clicked first
+// Update display and variable
+function handleDecimalPoints(event, number) {
+  if (decimalPoint === event.target && decimalAllowed === true) {
+    if (displayResult.textContent === '0' && number === '') {
+      number += '0' + event.target.textContent;
+      displayResult.textContent = number;
+      decimalAllowed = false;
+    } else {
+      number += event.target.textContent;
+      displayResult.textContent = number;
+      decimalAllowed = false;
+    }
+  }
+  return number;
 }
