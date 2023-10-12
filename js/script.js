@@ -65,6 +65,10 @@ function getFirstNumber(event) {
   }
   firstNumber = handleDecimalPoints(event, firstNumber);
   if (digitsArray.includes(event.target)) {
+    // Handle long number
+    if (numberTooLong(firstNumber)) {
+      return;
+    }
     firstNumber = handleDigits(event, firstNumber);
     // Handle an operator button click
   } else if (operatorsArray.includes(event.target)) {
@@ -110,6 +114,10 @@ function getSecondNumber(event) {
       resetCalculator();
       firstNumber = handleDigits(event, firstNumber);
     } else {
+      // Handle long number
+      if (numberTooLong(secondNumber)) {
+        return;
+      }
       secondNumber = handleDigits(event, secondNumber);
     }
     // Handle an operator button click
@@ -125,7 +133,11 @@ function getSecondNumber(event) {
     } else if (secondNumber === '') {
       return;
     } else {
-      result = operate(firstNumber, operator, secondNumber);
+      result = operate(firstNumber, operator, secondNumber).toFixed(6);
+      // Handle long result
+      if (numberTooLong(result)) {
+        return;
+      }
       operator = event.target.textContent;
       decimalAllowed = true;
       displayOperation.textContent = `${result} ${operator}`;
@@ -141,7 +153,11 @@ function getSecondNumber(event) {
       handleDivByZero();
       return;
     }
-    result = operate(firstNumber, operator, secondNumber);
+    result = +operate(firstNumber, operator, secondNumber).toFixed(6);
+    // Handle long result
+    if (numberTooLong(result)) {
+      return;
+    }
     decimalAllowed = true;
     displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
     displayResult.textContent = result;
@@ -210,4 +226,17 @@ function handleNegative(number) {
 function handleDivByZero() {
   resetCalculator();
   displayResult.textContent = 'You dum-dum!';
+}
+
+// Handle long numbers
+// Reset calculator
+// Display message
+function numberTooLong(number) {
+  let string = number.toString();
+  if (string.length >= 18) {
+    resetCalculator();
+    displayResult.textContent = 'Number too long!';
+    return true;
+  }
+  return false;
 }
