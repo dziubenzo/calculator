@@ -57,15 +57,8 @@ function getFirstNumber(event) {
     return;
   }
   firstNumber = handleDecimalPoints(event, firstNumber);
-  // Update display and variable
   if (digitsArray.includes(event.target)) {
-    // Make sure only one zero can be at the front
-    if (firstNumber === '0') {
-      return;
-    }
-    firstNumber += event.target.textContent;
-    displayResult.textContent = firstNumber;
-    console.log(firstNumber);
+    firstNumber = handleDigits(event, firstNumber);
     // If operator clicked and number is not empty:
     // Reset and update variables, update operation display and make it visible
     // Call another function
@@ -102,4 +95,18 @@ function handleDecimalPoints(event, number) {
     }
   }
   return number;
+}
+
+// Handle digits (helper function)
+function handleDigits(event, number) {
+  // Make sure only one zero can be at the front
+  if (number === '0') {
+    return number;
+  } else {
+    // Update display and variable
+    number += event.target.textContent;
+    displayResult.textContent = number;
+    console.log(number);
+    return number;
+  }
 }
