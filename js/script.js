@@ -77,7 +77,7 @@ function getFirstNumber(event) {
     // Handle negative numbers for the first number
     if (event.target === subtractButton && firstNumber === '') {
       firstNumber = handleNegative(firstNumber);
-    } else if (firstNumber === '') {
+    } else if (firstNumber === '' || firstNumber === '-') {
       return;
     } else {
       operator = event.target.textContent;
@@ -132,7 +132,7 @@ function getSecondNumber(event) {
     // Handle negative numbers for the second number
     if (event.target === subtractButton && secondNumber === '') {
       secondNumber = handleNegative(secondNumber);
-    } else if (secondNumber === '') {
+    } else if (secondNumber === '' || secondNumber === '-') {
       return;
     } else {
       result = +operate(firstNumber, operator, secondNumber).toFixed(6);
@@ -149,7 +149,11 @@ function getSecondNumber(event) {
       equalsPressed = false;
     }
     // Handle the equals button click
-  } else if (event.target === equalsButton && secondNumber != '') {
+  } else if (
+    event.target === equalsButton &&
+    secondNumber != '' &&
+    secondNumber != '-'
+  ) {
     // Handle division by zero
     if (operator === '÷' && secondNumber === '0') {
       handleDivByZero();
@@ -171,8 +175,8 @@ function getSecondNumber(event) {
 function handleDecimalPoints(event, number) {
   // Make sure decimal point can only be used once per number
   if (event.target === decimalPointButton && decimalAllowed) {
-    // Add it to the default zero or reset result if clicked first
-    if (number === '') {
+    // Add it to the default zero or add it with a preceding zero if the negative sign is entered
+    if (number === '' || number === '-') {
       number += '0' + event.target.textContent;
       displayResult.textContent = number;
       decimalAllowed = false;
