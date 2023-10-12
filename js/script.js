@@ -66,7 +66,7 @@ function getFirstNumber(event) {
   firstNumber = handleDecimalPoints(event, firstNumber);
   if (digitsArray.includes(event.target)) {
     // Handle long number
-    if (numberTooLong(firstNumber)) {
+    if (numberTooLong(firstNumber, 'Number too long!')) {
       return;
     }
     firstNumber = handleDigits(event, firstNumber);
@@ -115,7 +115,7 @@ function getSecondNumber(event) {
       firstNumber = handleDigits(event, firstNumber);
     } else {
       // Handle long number
-      if (numberTooLong(secondNumber)) {
+      if (numberTooLong(secondNumber, 'Number too long!')) {
         return;
       }
       secondNumber = handleDigits(event, secondNumber);
@@ -135,7 +135,7 @@ function getSecondNumber(event) {
     } else {
       result = operate(firstNumber, operator, secondNumber).toFixed(6);
       // Handle long result
-      if (numberTooLong(result)) {
+      if (numberTooLong(result, 'Result too long!')) {
         return;
       }
       operator = event.target.textContent;
@@ -155,7 +155,7 @@ function getSecondNumber(event) {
     }
     result = +operate(firstNumber, operator, secondNumber).toFixed(6);
     // Handle long result
-    if (numberTooLong(result)) {
+    if (numberTooLong(result, 'Result too long!')) {
       return;
     }
     decimalAllowed = true;
@@ -231,11 +231,11 @@ function handleDivByZero() {
 // Handle long numbers
 // Reset calculator
 // Display message
-function numberTooLong(number) {
+function numberTooLong(number, message) {
   let string = number.toString();
   if (string.length >= 18) {
     resetCalculator();
-    displayResult.textContent = 'Number too long!';
+    displayResult.textContent = message;
     return true;
   }
   return false;
