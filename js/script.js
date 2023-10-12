@@ -15,6 +15,7 @@ const operatorsArray = Array.from(operators);
 const equalsButton = buttons.querySelector('.equals');
 let equalsPressed = false;
 const clearButton = buttons.querySelector('.clear');
+const subtractButton = buttons.querySelector('.subtract');
 
 buttons.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
@@ -65,15 +66,22 @@ function getFirstNumber(event) {
   if (digitsArray.includes(event.target)) {
     firstNumber = handleDigits(event, firstNumber);
     // Handle an operator button click
-  } else if (operatorsArray.includes(event.target) && firstNumber != '') {
-    operator = event.target.textContent;
-    decimalAllowed = true;
-    displayOperation.classList.remove('hidden');
-    displayOperation.textContent = `${firstNumber} ${operator}`;
-    displayResult.textContent = '0';
-    // Call another function
-    buttons.removeEventListener('click', getFirstNumber);
-    buttons.addEventListener('click', getSecondNumber);
+  } else if (operatorsArray.includes(event.target)) {
+    // Handle negative numbers for the first number
+    if (event.target === subtractButton && firstNumber === '') {
+      firstNumber = handleNegative(firstNumber);
+    } else if (firstNumber === '') {
+      return;
+    } else {
+      operator = event.target.textContent;
+      decimalAllowed = true;
+      displayOperation.classList.remove('hidden');
+      displayOperation.textContent = `${firstNumber} ${operator}`;
+      displayResult.textContent = '0';
+      // Call another function
+      buttons.removeEventListener('click', getFirstNumber);
+      buttons.addEventListener('click', getSecondNumber);
+    }
   }
 }
 
@@ -104,15 +112,22 @@ function getSecondNumber(event) {
       secondNumber = handleDigits(event, secondNumber);
     }
     // Handle an operator button click
-  } else if (operatorsArray.includes(event.target) && secondNumber != '') {
-    result = operate(firstNumber, operator, secondNumber);
-    operator = event.target.textContent;
-    decimalAllowed = true;
-    displayOperation.textContent = `${result} ${operator}`;
-    displayResult.textContent = '0';
-    firstNumber = result;
-    secondNumber = '';
-    equalsPressed = false;
+  } else if (operatorsArray.includes(event.target)) {
+    // Handle negative numbers for the second number
+    if (event.target === subtractButton && secondNumber === '') {
+      secondNumber = handleNegative(secondNumber);
+    } else if (secondNumber === '') {
+      return;
+    } else {
+      result = operate(firstNumber, operator, secondNumber);
+      operator = event.target.textContent;
+      decimalAllowed = true;
+      displayOperation.textContent = `${result} ${operator}`;
+      displayResult.textContent = '0';
+      firstNumber = result;
+      secondNumber = '';
+      equalsPressed = false;
+    }
     // Handle the equals button click
   } else if (event.target === equalsButton && secondNumber != '') {
     result = operate(firstNumber, operator, secondNumber);
@@ -151,7 +166,6 @@ function handleDigits(event, number) {
     // Update display and variable
     number += event.target.textContent;
     displayResult.textContent = number;
-    // console.log(number);
     return number;
   }
 }
@@ -170,4 +184,11 @@ function resetCalculator() {
   displayResult.textContent = '0';
   buttons.removeEventListener('click', getSecondNumber);
   buttons.addEventListener('click', getFirstNumber);
+}
+
+// Handle negative numbers
+function handleNegative(number) {
+  number = '-';
+  displayResult.textContent = number;
+  return number;
 }
