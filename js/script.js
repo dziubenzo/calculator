@@ -13,8 +13,10 @@ let decimalAllowed = true;
 const operators = buttons.querySelectorAll('.operator');
 const operatorsArray = Array.from(operators);
 const equalsButton = buttons.querySelector('.equals');
+const clearButton = buttons.querySelector('.clear');
 
 buttons.addEventListener('click', getFirstNumber);
+clearButton.addEventListener('click', resetCalculator);
 
 // Add two numbers
 function add(num1, num2) {
@@ -132,4 +134,17 @@ function handleDigits(event, number) {
     console.log(number);
     return number;
   }
+}
+
+// Reset calculator once the C button is clicked
+function resetCalculator(event) {
+  firstNumber = '';
+  secondNumber = '';
+  operator = '';
+  result = 0;
+  decimalAllowed = true;
+  displayOperation.classList.add('hidden');
+  displayResult.textContent = '0';
+  buttons.removeEventListener('click', getSecondNumber);
+  buttons.addEventListener('click', getFirstNumber);
 }
