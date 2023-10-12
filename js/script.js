@@ -83,7 +83,7 @@ function getFirstNumber(event) {
       operator = event.target.textContent;
       decimalAllowed = true;
       displayOperation.classList.remove('hidden');
-      displayOperation.textContent = `${firstNumber} ${operator}`;
+      displayOperation.textContent = `${Number(firstNumber)} ${operator}`;
       displayResult.textContent = '0';
       // Call another function
       buttons.removeEventListener('click', getFirstNumber);
@@ -165,7 +165,7 @@ function getSecondNumber(event) {
       return;
     }
     decimalAllowed = true;
-    displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
+    displayOperation.textContent = `${Number(firstNumber)} ${operator} ${Number(secondNumber)} =`;
     displayResult.textContent = result;
     equalsPressed = true;
   }
