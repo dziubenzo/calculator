@@ -8,7 +8,7 @@ let displayOperation = document.querySelector('.display .operation');
 const buttons = document.querySelector('.buttons');
 const digits = buttons.querySelectorAll('.digit');
 const digitsArray = Array.from(digits);
-const decimalPoint = document.querySelector('.decimal');
+const decimalPointButton = document.querySelector('.decimal');
 let decimalAllowed = true;
 const operators = buttons.querySelectorAll('.operator');
 const operatorsArray = Array.from(operators);
@@ -64,14 +64,13 @@ function getFirstNumber(event) {
   if (digitsArray.includes(event.target)) {
     firstNumber = handleDigits(event, firstNumber);
     // If operator clicked and number is not empty:
-    // Reset and update variables, update operation display and make it visible
-    // Call another function
   } else if (operatorsArray.includes(event.target) && firstNumber != '') {
     operator = event.target.textContent;
     decimalAllowed = true;
     displayOperation.classList.remove('hidden');
     displayOperation.textContent = `${firstNumber} ${operator}`;
     displayResult.textContent = '0';
+    // Call another function
     buttons.removeEventListener('click', getFirstNumber);
     buttons.addEventListener('click', getSecondNumber);
   }
@@ -94,21 +93,21 @@ function getSecondNumber(event) {
     displayResult.textContent = '0';
     firstNumber = result;
     secondNumber = '';
-  } else if (event.target === equalsButton) {
+  } else if (event.target === equalsButton && secondNumber != '') {
     result = operate(firstNumber, operator, secondNumber);
     decimalAllowed = true;
     displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
     displayResult.textContent = result;
-    return;
+    resetVariables();
   }
 }
 
 // Handle decimal points (helper function):
 function handleDecimalPoints(event, number) {
   // Make sure decimal point can only be used once per number
-  if (decimalPoint === event.target && decimalAllowed === true) {
-    // Add it to the default zero if clicked first
-    if (displayResult.textContent === '0' && number === '') {
+  if (decimalPointButton === event.target && decimalAllowed === true) {
+    // Add it to the default zero or reset result if clicked first
+    if (number === '') {
       number += '0' + event.target.textContent;
       displayResult.textContent = number;
       decimalAllowed = false;
@@ -137,14 +136,25 @@ function handleDigits(event, number) {
 }
 
 // Reset calculator once the C button is clicked
-function resetCalculator(event) {
+function resetCalculator() {
   firstNumber = '';
   secondNumber = '';
   operator = '';
   result = 0;
   decimalAllowed = true;
   displayOperation.classList.add('hidden');
+  displayOperation.textContent = '0';
   displayResult.textContent = '0';
+  buttons.removeEventListener('click', getSecondNumber);
+  buttons.addEventListener('click', getFirstNumber);
+}
+
+// Reset variables if the equals button is clicked (helper function)
+function resetVariables() {
+  firstNumber = '';
+  secondNumber = '';
+  operator = '';
+  decimalAllowed = true;
   buttons.removeEventListener('click', getSecondNumber);
   buttons.addEventListener('click', getFirstNumber);
 }
