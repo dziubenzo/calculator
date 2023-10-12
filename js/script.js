@@ -16,6 +16,7 @@ const equalsButton = buttons.querySelector('.equals');
 let equalsPressed = false;
 const clearButton = buttons.querySelector('.clear');
 const subtractButton = buttons.querySelector('.subtract');
+const divideButton = buttons.querySelector('.divide');
 
 buttons.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
@@ -113,6 +114,11 @@ function getSecondNumber(event) {
     }
     // Handle an operator button click
   } else if (operatorsArray.includes(event.target)) {
+    // Handle division by zero
+    if (event.target === divideButton && secondNumber === '0') {
+      handleDivByZero();
+      return;
+    }
     // Handle negative numbers for the second number
     if (event.target === subtractButton && secondNumber === '') {
       secondNumber = handleNegative(secondNumber);
@@ -130,6 +136,11 @@ function getSecondNumber(event) {
     }
     // Handle the equals button click
   } else if (event.target === equalsButton && secondNumber != '') {
+    // Handle division by zero
+    if (operator === '÷' && secondNumber === '0') {
+      handleDivByZero();
+      return;
+    }
     result = operate(firstNumber, operator, secondNumber);
     decimalAllowed = true;
     displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
@@ -191,4 +202,12 @@ function handleNegative(number) {
   number = '-';
   displayResult.textContent = number;
   return number;
+}
+
+// Handle division by zero
+// Reset calculator
+// Display message
+function handleDivByZero() {
+  resetCalculator();
+  displayResult.textContent = 'You dum-dum!';
 }
