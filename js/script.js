@@ -63,10 +63,10 @@ function getFirstNumber(event) {
     // Reset and update variables, update operation display and make it visible
     // Call another function
   } else if (operatorsArray.includes(event.target) && firstNumber != '') {
-    operator = event.target.getAttribute('value');
+    operator = event.target.textContent;
     decimalAllowed = true;
     displayOperation.classList.remove('hidden');
-    displayOperation.textContent = `${firstNumber} ${event.target.textContent}`;
+    displayOperation.textContent = `${firstNumber} ${operator}`;
     buttons.removeEventListener('click', getFirstNumber);
     buttons.addEventListener('click', getSecondNumber);
   }
