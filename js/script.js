@@ -17,9 +17,11 @@ let equalsPressed = false;
 const clearButton = buttons.querySelector('.clear');
 const subtractButton = buttons.querySelector('.subtract');
 const divideButton = buttons.querySelector('.divide');
+const deleteButton = buttons.querySelector('.delete');
 
 buttons.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
+deleteButton.addEventListener('click', deleteChar);
 
 // Add two numbers
 function add(num1, num2) {
@@ -133,7 +135,7 @@ function getSecondNumber(event) {
     } else if (secondNumber === '') {
       return;
     } else {
-      result = operate(firstNumber, operator, secondNumber).toFixed(6);
+      result = +operate(firstNumber, operator, secondNumber).toFixed(6);
       // Handle long result
       if (numberTooLong(result, 'Result too long!')) {
         return;
@@ -165,7 +167,7 @@ function getSecondNumber(event) {
   }
 }
 
-// Handle decimal points (helper function):
+// Handle decimal points (helper function)
 function handleDecimalPoints(event, number) {
   // Make sure decimal point can only be used once per number
   if (event.target === decimalPointButton && decimalAllowed) {
@@ -239,4 +241,37 @@ function numberTooLong(number, message) {
     return true;
   }
   return false;
+}
+
+// Delete digit, decimal point or negative sign
+function deleteChar() {
+  let removedChar = displayResult.textContent.slice(-1);
+  let newNumber = displayResult.textContent.slice(0, -1);
+  // Determine which number to change
+  if (displayResult.textContent === firstNumber) {
+    // Make sure the default empty zero is present on the display
+    if (newNumber === '') {
+      displayResult.textContent = '0';
+      firstNumber = '';
+      return;
+    }
+    displayResult.textContent = newNumber;
+    firstNumber = newNumber;
+    if (removedChar === '.') {
+      decimalAllowed = true;
+    }
+    // Determine which number to change
+  } else if (displayResult.textContent === secondNumber) {
+    // Make sure the default empty zero is present on the display
+    if (newNumber === '') {
+      displayResult.textContent = '0';
+      secondNumber = '';
+      return;
+    }
+    displayResult.textContent = newNumber;
+    secondNumber = newNumber;
+    if (removedChar === '.') {
+      decimalAllowed = true;
+    }
+  }
 }
