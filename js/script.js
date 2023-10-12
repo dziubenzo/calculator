@@ -1,6 +1,7 @@
 let firstNumber = '';
 let secondNumber = '';
 let operator = '';
+let result = 0;
 
 let displayResult = document.querySelector('.display .result');
 let displayOperation = document.querySelector('.display .operation');
@@ -11,12 +12,13 @@ const decimalPoint = document.querySelector('.decimal');
 let decimalAllowed = true;
 const operators = buttons.querySelectorAll('.operator');
 const operatorsArray = Array.from(operators);
+const equalsButton = buttons.querySelector('.equals');
 
 buttons.addEventListener('click', getFirstNumber);
 
 // Add two numbers
 function add(num1, num2) {
-  return num1 + num2;
+  return +num1 + +num2;
 }
 
 // Subtract two numbers
@@ -67,6 +69,7 @@ function getFirstNumber(event) {
     decimalAllowed = true;
     displayOperation.classList.remove('hidden');
     displayOperation.textContent = `${firstNumber} ${operator}`;
+    displayResult.textContent = '0';
     buttons.removeEventListener('click', getFirstNumber);
     buttons.addEventListener('click', getSecondNumber);
   }
@@ -74,20 +77,40 @@ function getFirstNumber(event) {
 
 // Get second number
 function getSecondNumber(event) {
-  console.log("I'm working, I guess?");
-  return;
+  // Skip buttons div itself
+  if (event.target === buttons) {
+    return;
+  }
+  secondNumber = handleDecimalPoints(event, secondNumber);
+  if (digitsArray.includes(event.target)) {
+    secondNumber = handleDigits(event, secondNumber);
+  } else if (operatorsArray.includes(event.target) && secondNumber != '') {
+    result = operate(firstNumber, operator, secondNumber);
+    operator = event.target.textContent;
+    decimalAllowed = true;
+    displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} = ${result}`;
+    displayResult.textContent = '0';
+    firstNumber = result;
+    secondNumber = '';
+  } else if (event.target === equalsButton) {
+    result = operate(firstNumber, operator, secondNumber);
+    decimalAllowed = true;
+    displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
+    displayResult.textContent = result;
+    return;
+  }
 }
 
 // Handle decimal points (helper function):
-// Make sure decimal point can only be used once per number
-// Add it to the default zero if clicked first
-// Update display and variable
 function handleDecimalPoints(event, number) {
+  // Make sure decimal point can only be used once per number
   if (decimalPoint === event.target && decimalAllowed === true) {
+    // Add it to the default zero if clicked first
     if (displayResult.textContent === '0' && number === '') {
       number += '0' + event.target.textContent;
       displayResult.textContent = number;
       decimalAllowed = false;
+      // Update display and variable
     } else {
       number += event.target.textContent;
       displayResult.textContent = number;
