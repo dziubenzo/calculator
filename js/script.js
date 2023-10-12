@@ -13,6 +13,7 @@ let decimalAllowed = true;
 const operators = buttons.querySelectorAll('.operator');
 const operatorsArray = Array.from(operators);
 const equalsButton = buttons.querySelector('.equals');
+let equalsPressed = false;
 const clearButton = buttons.querySelector('.clear');
 
 buttons.addEventListener('click', getFirstNumber);
@@ -63,7 +64,7 @@ function getFirstNumber(event) {
   firstNumber = handleDecimalPoints(event, firstNumber);
   if (digitsArray.includes(event.target)) {
     firstNumber = handleDigits(event, firstNumber);
-    // If operator clicked and number is not empty:
+    // Handle an operator button click
   } else if (operatorsArray.includes(event.target) && firstNumber != '') {
     operator = event.target.textContent;
     decimalAllowed = true;
@@ -77,35 +78,55 @@ function getFirstNumber(event) {
 }
 
 // Get second number
+// Handle two calculator use-cases:
+// 1) Perform multiple operations on the result if an operator button is clicked
+// 2) Reset calculator if a digit/decimal point is clicked after clicking the equals button
 function getSecondNumber(event) {
   // Skip buttons div itself
   if (event.target === buttons) {
     return;
   }
-  secondNumber = handleDecimalPoints(event, secondNumber);
+  // 1) Handle decimal points for the second number
+  // 2) Reset calculator and handle decimal points for the first number
+  if (equalsPressed && event.target === decimalPointButton) {
+    resetCalculator();
+    firstNumber = handleDecimalPoints(event, firstNumber);
+  } else {
+    secondNumber = handleDecimalPoints(event, secondNumber);
+  }
+  // 1) Handle digits for the second number
+  // 2) Reset calculator and handle digits for the first number
   if (digitsArray.includes(event.target)) {
-    secondNumber = handleDigits(event, secondNumber);
+    if (equalsPressed) {
+      resetCalculator();
+      firstNumber = handleDigits(event, firstNumber);
+    } else {
+      secondNumber = handleDigits(event, secondNumber);
+    }
+    // Handle an operator button click
   } else if (operatorsArray.includes(event.target) && secondNumber != '') {
     result = operate(firstNumber, operator, secondNumber);
     operator = event.target.textContent;
     decimalAllowed = true;
-    displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} = ${result}`;
+    displayOperation.textContent = `${result} ${operator}`;
     displayResult.textContent = '0';
     firstNumber = result;
     secondNumber = '';
+    equalsPressed = false;
+    // Handle the equals button click
   } else if (event.target === equalsButton && secondNumber != '') {
     result = operate(firstNumber, operator, secondNumber);
     decimalAllowed = true;
     displayOperation.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
     displayResult.textContent = result;
-    resetVariables();
+    equalsPressed = true;
   }
 }
 
 // Handle decimal points (helper function):
 function handleDecimalPoints(event, number) {
   // Make sure decimal point can only be used once per number
-  if (decimalPointButton === event.target && decimalAllowed === true) {
+  if (event.target === decimalPointButton && decimalAllowed) {
     // Add it to the default zero or reset result if clicked first
     if (number === '') {
       number += '0' + event.target.textContent;
@@ -130,31 +151,23 @@ function handleDigits(event, number) {
     // Update display and variable
     number += event.target.textContent;
     displayResult.textContent = number;
-    console.log(number);
+    // console.log(number);
     return number;
   }
 }
 
 // Reset calculator once the C button is clicked
+// Reset calculator once a digit/decimal point is clicked after clicking an equals button first
 function resetCalculator() {
   firstNumber = '';
   secondNumber = '';
   operator = '';
   result = 0;
   decimalAllowed = true;
+  equalsPressed = false;
   displayOperation.classList.add('hidden');
   displayOperation.textContent = '0';
   displayResult.textContent = '0';
-  buttons.removeEventListener('click', getSecondNumber);
-  buttons.addEventListener('click', getFirstNumber);
-}
-
-// Reset variables if the equals button is clicked (helper function)
-function resetVariables() {
-  firstNumber = '';
-  secondNumber = '';
-  operator = '';
-  decimalAllowed = true;
   buttons.removeEventListener('click', getSecondNumber);
   buttons.addEventListener('click', getFirstNumber);
 }
