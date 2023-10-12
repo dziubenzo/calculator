@@ -9,7 +9,6 @@ const digits = buttons.querySelectorAll('.digit');
 const digitsArray = Array.from(digits);
 const decimalPoint = document.querySelector('.decimal');
 let decimalAllowed = true;
-const zeroDigit = document.querySelector('.zero');
 const operators = buttons.querySelectorAll('.operator');
 const operatorsArray = Array.from(operators);
 
@@ -73,6 +72,10 @@ function getFirstNumber(event) {
   }
   // Update display and variable
   if (digitsArray.includes(event.target)) {
+    // Make sure only one zero can be at the front
+    if (firstNumber === '0') {
+      return;
+    }
     firstNumber += event.target.textContent;
     displayResult.textContent = firstNumber;
     console.log(firstNumber);
