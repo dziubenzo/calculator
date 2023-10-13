@@ -24,6 +24,8 @@ buttonsDiv.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
 deleteButton.addEventListener('click', deleteChar);
 document.addEventListener('keydown', simulateClick);
+document.addEventListener('keydown', imitateHover);
+document.addEventListener('keyup', removeHover);
 
 // Add two numbers
 function add(num1, num2) {
@@ -288,12 +290,61 @@ function simulateClick(event) {
   buttons.forEach((button) => {
     if (event.key === button.getAttribute('data-key')) {
       button.dispatchEvent(fakeClick);
-      // Support for user-intuitive Enter key
-    } else if (event.key === 'Enter') {
-      equalsButton.dispatchEvent(fakeClick);
-      // Support for comma key
-    } else if (event.key === ',') {
-      decimalPointButton.dispatchEvent(fakeClick);
     }
   });
+  // Support for user-intuitive Enter key
+  if (event.key === 'Enter') {
+    equalsButton.dispatchEvent(fakeClick);
+    // Support for comma key
+  } else if (event.key === ',') {
+    decimalPointButton.dispatchEvent(fakeClick);
+  }
+}
+
+// Imitate hover effect if one of the supported keys is pressed
+function imitateHover(event) {
+  buttons.forEach((button) => {
+    if (event.key === button.getAttribute('data-key')) {
+      if (digitsArray.includes(button)) {
+        button.classList.add('pressed-digit');
+      } else if (operatorsArray.includes(button)) {
+        button.classList.add('pressed-operator');
+      } else if (button === clearButton || button === deleteButton) {
+        button.classList.add('pressed-clear-delete');
+      } else if (button === decimalPointButton) {
+        button.classList.add('pressed-decimal');
+      } else if (button === equalsButton) {
+        button.classList.add('pressed-equals');
+      }
+    }
+  });
+  if (event.key === 'Enter') {
+    equalsButton.classList.add('pressed-equals');
+  } else if (event.key === ',') {
+    decimalPointButton.classList.add('pressed-decimal');
+  }
+}
+
+// Remove hover effect if one of the supported keys is released
+function removeHover(event) {
+  buttons.forEach((button) => {
+    if (event.key === button.getAttribute('data-key')) {
+      if (digitsArray.includes(button)) {
+        button.classList.remove('pressed-digit');
+      } else if (operatorsArray.includes(button)) {
+        button.classList.remove('pressed-operator');
+      } else if (button === clearButton || button === deleteButton) {
+        button.classList.remove('pressed-clear-delete');
+      } else if (button === decimalPointButton) {
+        button.classList.remove('pressed-decimal');
+      } else if (button === equalsButton) {
+        button.classList.remove('pressed-equals');
+      }
+    }
+  });
+  if (event.key === 'Enter') {
+    equalsButton.classList.remove('pressed-equals');
+  } else if (event.key === ',') {
+    decimalPointButton.classList.remove('pressed-decimal');
+  }
 }

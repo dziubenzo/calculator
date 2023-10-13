@@ -82,24 +82,33 @@ body {
   visibility: hidden;
 }
 
-.button:hover {
-  font-size: 22px;
+.button.digit:hover,
+.pressed-digit {
+  font-size: 24px;
   background-color: rgb(148, 148, 148);
 }
 
-.button.operator:hover {
+.button.operator:hover,
+.pressed-operator {
+  font-size: 24px;
   background-color: coral;
 }
 
 .button.clear:hover,
-.button.delete:hover {
+.button.delete:hover,
+.pressed-clear-delete {
+  font-size: 24px;
   background-color: rgb(141, 255, 253);
 }
 
-.button.decimal:hover {
+.button.decimal:hover,
+.pressed-decimal {
+  font-size: 24px;
   background-color: rgb(219, 154, 255);
 }
 
-.button.equals:hover {
+.button.equals:hover,
+.pressed-equals {
+  font-size: 24px;
   background-color: rgb(217, 255, 80);
 }
