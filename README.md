@@ -1,5 +1,5 @@
 # Odin Project - Calculator
-This is a simple web calculator with both mouse and keyboard input support. Build as part of the TOP.
+This is a simple web calculator with both mouse and keyboard input support. Build as part of TOP.
 
 ## Features
 * Add, subtract, divide and multiply numbers
