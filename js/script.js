@@ -5,21 +5,22 @@ let result = 0;
 
 let displayResult = document.querySelector('.display .result');
 let displayOperation = document.querySelector('.display .operation');
-const buttons = document.querySelector('.buttons');
-const digits = buttons.querySelectorAll('.digit');
+const buttonsDiv = document.querySelector('.buttons');
+const buttons = document.querySelectorAll('.button');
+const digits = buttonsDiv.querySelectorAll('.digit');
 const digitsArray = Array.from(digits);
 const decimalPointButton = document.querySelector('.decimal');
 let decimalAllowed = true;
-const operators = buttons.querySelectorAll('.operator');
+const operators = buttonsDiv.querySelectorAll('.operator');
 const operatorsArray = Array.from(operators);
-const equalsButton = buttons.querySelector('.equals');
+const equalsButton = buttonsDiv.querySelector('.equals');
 let equalsPressed = false;
-const clearButton = buttons.querySelector('.clear');
-const subtractButton = buttons.querySelector('.subtract');
-const divideButton = buttons.querySelector('.divide');
-const deleteButton = buttons.querySelector('.delete');
+const clearButton = buttonsDiv.querySelector('.clear');
+const subtractButton = buttonsDiv.querySelector('.subtract');
+const divideButton = buttonsDiv.querySelector('.divide');
+const deleteButton = buttonsDiv.querySelector('.delete');
 
-buttons.addEventListener('click', getFirstNumber);
+buttonsDiv.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
 deleteButton.addEventListener('click', deleteChar);
 document.addEventListener('keydown', keyPressed);
@@ -63,7 +64,7 @@ function operate(num1, operator, num2) {
 // Get first number
 function getFirstNumber(event) {
   // Skip buttons div itself
-  if (event.target === buttons) {
+  if (event.target === buttonsDiv) {
     return;
   }
   firstNumber = handleDecimalPoints(event, firstNumber);
@@ -87,8 +88,8 @@ function getFirstNumber(event) {
       displayOperation.textContent = `${Number(firstNumber)} ${operator}`;
       displayResult.textContent = '0';
       // Call another function
-      buttons.removeEventListener('click', getFirstNumber);
-      buttons.addEventListener('click', getSecondNumber);
+      buttonsDiv.removeEventListener('click', getFirstNumber);
+      buttonsDiv.addEventListener('click', getSecondNumber);
     }
   }
 }
@@ -99,7 +100,7 @@ function getFirstNumber(event) {
 // 2) Reset calculator if a digit/decimal point is clicked after clicking the equals button
 function getSecondNumber(event) {
   // Skip buttons div itself
-  if (event.target === buttons) {
+  if (event.target === buttonsDiv) {
     return;
   }
   // 1) Handle decimal points for the second number
@@ -218,8 +219,8 @@ function resetCalculator() {
   displayOperation.classList.add('hidden');
   displayOperation.textContent = '0';
   displayResult.textContent = '0';
-  buttons.removeEventListener('click', getSecondNumber);
-  buttons.addEventListener('click', getFirstNumber);
+  buttonsDiv.removeEventListener('click', getSecondNumber);
+  buttonsDiv.addEventListener('click', getFirstNumber);
 }
 
 // Handle negative numbers
@@ -283,11 +284,12 @@ function deleteChar() {
   }
 }
 
-// Determine key pressed
+// Add keyboard support by simulating clicks
 function keyPressed(event) {
-  console.log(event.key);
-  if (event.key === 'Digit1') {
-    let test = new MouseEvent('click', {bubbles: true});
-    digitOne.dispatchEvent(test);
-  }
+  let fakeClick = new MouseEvent('click', { bubbles: true });
+  buttons.forEach((button) => {
+    if (event.key === button.getAttribute('data-key')) {
+      button.dispatchEvent(fakeClick);
+    }
+  });
 }
