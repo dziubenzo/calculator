@@ -19,8 +19,6 @@ const subtractButton = buttons.querySelector('.subtract');
 const divideButton = buttons.querySelector('.divide');
 const deleteButton = buttons.querySelector('.delete');
 
-const digitOne = buttons.querySelector('.one');
-
 buttons.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
 deleteButton.addEventListener('click', deleteChar);
@@ -287,9 +285,8 @@ function deleteChar() {
 
 // Determine key pressed
 function keyPressed(event) {
-  // console.log(event.code);
-  if (event.code === 'Digit1') {
-    console.log('One pressed');
+  console.log(event.key);
+  if (event.key === 'Digit1') {
     let test = new MouseEvent('click', {bubbles: true});
     digitOne.dispatchEvent(test);
   }
