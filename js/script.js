@@ -23,6 +23,7 @@ const deleteButton = buttonsDiv.querySelector('.delete');
 buttonsDiv.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
 deleteButton.addEventListener('click', deleteChar);
+
 document.addEventListener('keydown', simulateClick);
 document.addEventListener('keydown', imitateHover);
 document.addEventListener('keyup', removeHover);
@@ -292,7 +293,7 @@ function simulateClick(event) {
       button.dispatchEvent(fakeClick);
     }
   });
-  // Support for user-intuitive Enter key
+  // Support for intuitive Enter key
   if (event.key === 'Enter') {
     equalsButton.dispatchEvent(fakeClick);
     // Support for comma key
