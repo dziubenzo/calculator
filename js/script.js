@@ -19,9 +19,12 @@ const subtractButton = buttons.querySelector('.subtract');
 const divideButton = buttons.querySelector('.divide');
 const deleteButton = buttons.querySelector('.delete');
 
+const digitOne = buttons.querySelector('.one');
+
 buttons.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
 deleteButton.addEventListener('click', deleteChar);
+document.addEventListener('keydown', keyPressed);
 
 // Add two numbers
 function add(num1, num2) {
@@ -165,7 +168,9 @@ function getSecondNumber(event) {
       return;
     }
     decimalAllowed = true;
-    displayOperation.textContent = `${Number(firstNumber)} ${operator} ${Number(secondNumber)} =`;
+    displayOperation.textContent = `${Number(firstNumber)} ${operator} ${Number(
+      secondNumber
+    )} =`;
     displayResult.textContent = result;
     equalsPressed = true;
   }
@@ -277,5 +282,15 @@ function deleteChar() {
     if (removedChar === '.') {
       decimalAllowed = true;
     }
+  }
+}
+
+// Determine key pressed
+function keyPressed(event) {
+  // console.log(event.code);
+  if (event.code === 'Digit1') {
+    console.log('One pressed');
+    let test = new MouseEvent('click', {bubbles: true});
+    digitOne.dispatchEvent(test);
   }
 }
