@@ -23,7 +23,7 @@ const deleteButton = buttonsDiv.querySelector('.delete');
 buttonsDiv.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
 deleteButton.addEventListener('click', deleteChar);
-document.addEventListener('keydown', keyPressed);
+document.addEventListener('keydown', simulateClicks);
 
 // Add two numbers
 function add(num1, num2) {
@@ -285,11 +285,14 @@ function deleteChar() {
 }
 
 // Add keyboard support by simulating clicks
-function keyPressed(event) {
+function simulateClicks(event) {
   let fakeClick = new MouseEvent('click', { bubbles: true });
   buttons.forEach((button) => {
     if (event.key === button.getAttribute('data-key')) {
       button.dispatchEvent(fakeClick);
+      // Support for user-intuitive Enter press
+    } else if (event.key === 'Enter') {
+      equalsButton.dispatchEvent(fakeClick);
     }
   });
 }
