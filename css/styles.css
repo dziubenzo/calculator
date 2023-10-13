@@ -67,7 +67,7 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color:rgb(179, 179, 179);
+  background-color: rgb(179, 179, 179);
 }
 
 .button.digit.zero {
@@ -84,4 +84,22 @@ body {
 
 .button:hover {
   font-size: 22px;
+  background-color: rgb(148, 148, 148);
+}
+
+.button.operator:hover {
+  background-color: coral;
+}
+
+.button.clear:hover,
+.button.delete:hover {
+  background-color: rgb(141, 255, 253);
+}
+
+.button.decimal:hover {
+  background-color: rgb(219, 154, 255);
+}
+
+.button.equals:hover {
+  background-color: rgb(217, 255, 80);
 }
