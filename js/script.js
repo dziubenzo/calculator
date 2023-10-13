@@ -23,7 +23,7 @@ const deleteButton = buttonsDiv.querySelector('.delete');
 buttonsDiv.addEventListener('click', getFirstNumber);
 clearButton.addEventListener('click', resetCalculator);
 deleteButton.addEventListener('click', deleteChar);
-document.addEventListener('keydown', simulateClicks);
+document.addEventListener('keydown', simulateClick);
 
 // Add two numbers
 function add(num1, num2) {
@@ -95,9 +95,7 @@ function getFirstNumber(event) {
 }
 
 // Get second number
-// Handle two calculator use-cases:
-// 1) Perform multiple operations on the result if an operator button is clicked
-// 2) Reset calculator if a digit/decimal point is clicked after clicking the equals button
+// Handle two calculator use-cases
 function getSecondNumber(event) {
   // Skip buttons div itself
   if (event.target === buttonsDiv) {
@@ -285,15 +283,15 @@ function deleteChar() {
 }
 
 // Add keyboard support by simulating clicks
-function simulateClicks(event) {
+function simulateClick(event) {
   let fakeClick = new MouseEvent('click', { bubbles: true });
   buttons.forEach((button) => {
     if (event.key === button.getAttribute('data-key')) {
       button.dispatchEvent(fakeClick);
-      // Support for user-intuitive Enter press
+      // Support for user-intuitive Enter key
     } else if (event.key === 'Enter') {
       equalsButton.dispatchEvent(fakeClick);
-      // Support for commas
+      // Support for comma key
     } else if (event.key === ',') {
       decimalPointButton.dispatchEvent(fakeClick);
     }
