@@ -293,6 +293,9 @@ function simulateClicks(event) {
       // Support for user-intuitive Enter press
     } else if (event.key === 'Enter') {
       equalsButton.dispatchEvent(fakeClick);
+      // Support for commas
+    } else if (event.key === ',') {
+      decimalPointButton.dispatchEvent(fakeClick);
     }
   });
 }
